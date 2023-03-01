@@ -6,15 +6,7 @@ public class Board {
 
     // should instantiate the board to be a 3x3 array:
     public Board() {
-        this.board = new char[3][3];
-        int inc = 1;
-        for(int i=0;i<3;i++){
-            for(int j=0;j<3;j++){
-                String num = Integer.toString(inc);
-                this.board[i][j] = num.charAt(0);
-                inc++;
-            }
-        }
+        this.board = new char[][]{{'7','8','9'},{'4','5','6'},{'1','2','3'}};
     }
 
     // this method should take in a row, column, and a newChar and update the board accordingly:
