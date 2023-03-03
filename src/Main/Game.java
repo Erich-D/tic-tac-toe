@@ -36,31 +36,24 @@ public class Game {
         this.player2 = new Player(name,'O');
     }
 
+    private int setBit(int bits, int set){
+        int mask = 1 << set;
+        int result = (bits | mask);
+        return result;
+    }
     // this method should let each player pick a spot and also print the board between selections:
     private void playRound(int spot, Player c) {
-        c.getCells().add(this.nums[spot-1]);
+        c.setIcells(setBit(c.getIcells(),this.nums[spot-1]-1));
         cells.remove((Integer)spot);
         int cell = this.nums[spot-1]-1;
         this.board.updateBoard((cell)/3,(cell)%3,c.getGamePiece());
-//
-        if(c.getCells().contains(1) && c.getCells().contains(2) && c.getCells().contains(3)){
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(4) && c.getCells().contains(5) && c.getCells().contains(6)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(7) && c.getCells().contains(8) && c.getCells().contains(9)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(1) && c.getCells().contains(4) && c.getCells().contains(7)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(2) && c.getCells().contains(5) && c.getCells().contains(8)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(3) && c.getCells().contains(6) && c.getCells().contains(9)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(3) && c.getCells().contains(5) && c.getCells().contains(7)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (c.getCells().contains(1) && c.getCells().contains(5) && c.getCells().contains(9)) {
-            this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
-        } else if (cells.isEmpty()) {
-            this.status = Status.TIE;
+        for(int i=0;i<3;i++){
+            if (((7 << i*3 & c.getIcells() ^ 7 << i*3) == 0) || ((73 << i & c.getIcells() ^ 73 << i) == 0) || ((273 & c.getIcells() ^ 273) == 0) || ((84 & c.getIcells() ^ 84) == 0) ) {
+                this.status = (c.getGamePiece()=='X') ? Status.PLAYER1_WON:Status.PLAYER2_WON;
+                break;
+            } else if (cells.isEmpty()) {
+                this.status = Status.TIE;
+            }
         }
     }
 
@@ -92,8 +85,8 @@ public class Game {
             game.status = Status.UNFINISHED;
             int spot = 0;
             int round = 0;
-            game.player1.getCells().clear();
-            game.player2.getCells().clear();
+            game.player2.setIcells(0);
+            game.player1.setIcells(0);
             System.out.println(game.board.toString());
             while (game.getStatus() == Status.UNFINISHED) {
                 Player player = (round % 2 == 0) ? game.player1 : game.player2;

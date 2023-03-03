@@ -9,13 +9,12 @@ public class Player {
     // that the player claims that spot:
     private char gamePiece;
 
-    private List<Integer> cells;
+    private int icells = 0;
 
     // this constructor should take in a name and a game piece and assign the values to the fields:
     public Player(String name, char gamePiece) {
         this.name = name;
         this.gamePiece = gamePiece;
-        this.cells = new ArrayList<Integer>();
     }
 
     // should return the player's name:
@@ -28,11 +27,11 @@ public class Player {
         return this.gamePiece;
     }
 
-    public List<Integer> getCells() {
-        return cells;
+    public int getIcells() {
+        return icells;
     }
 
-    public void setCells(List<Integer> cells) {
-        this.cells = cells;
+    public void setIcells(int icells) {
+        this.icells = icells;
     }
 }
